@@ -1,65 +1,138 @@
 # Spring AI Project
 
-## Overview
-This project is a Spring Boot application designed to interact with AI functionalities. It provides a service for generating AI responses based on predefined prompts.
+A clean and simple Spring Boot application that integrates with Ollama's AI models for text chat.
 
-## Project Structure
-```
-spring-ai-project
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── example
-│   │   │           └── springaiproject
-│   │   │               ├── SpringAiProjectApplication.java
-│   │   │               └── service
-│   │   │                   └── AiService.java
-│   │   └── resources
-│   │       ├── application.properties
-│   │       └── prompts
-│   │           └── prompt.txt
-│   └── test
-│       └── java
-│           └── com
-│               └── example
-│                   └── springaiproject
-│                       └── SpringAiProjectApplicationTests.java
-├── pom.xml
-└── README.md
-```
+## Features
 
-## Setup Instructions
-1. **Clone the repository**:
-   ```
-   git clone <repository-url>
-   cd spring-ai-project
+🤖 **AI Chat**: Interactive conversation with Ollama's llama3 model
+� **Modern UI**: Clean, responsive web interface
+🔧 **Java 24 Compatible**: Uses Byte Buddy experimental mode
+
+## Quick Start
+
+1. **Prerequisites**
+   - Java 24+
+   - Maven 3.6+
+   - Ollama installed and running
+
+2. **Setup Ollama**
+   ```bash
+   # Install Ollama
+   curl -fsSL https://ollama.com/install.sh | sh
+   
+   # Pull the llama3 model
+   ollama pull llama3
    ```
 
-2. **Build the project**:
-   Ensure you have Maven installed, then run:
-   ```
-   mvn clean install
-   ```
-
-3. **Run the application**:
-   You can run the application using:
-   ```
-   mvn spring-boot:run
+3. **Run the Application**
+   ```bash
+   mvn spring-boot:run -Dnet.bytebuddy.experimental=true
    ```
 
-## Usage
-- The main entry point of the application is located in `SpringAiProjectApplication.java`.
-- The `AiService` class contains methods for generating AI responses. You can customize the prompts in `src/main/resources/prompts/prompt.txt`.
+4. **Access the UI**
+   Open http://localhost:8080 in your browser
 
-## Testing
-Unit tests for the application can be found in `SpringAiProjectApplicationTests.java`. You can run the tests using:
-```
-mvn test
+## API Endpoints
+
+### Chat Endpoint
+```bash
+POST /api/ai/ask
+Content-Type: application/json
+
+{
+  "question": "What is the capital of France?"
+}
 ```
 
-## Dependencies
-The project uses Maven for dependency management. Check `pom.xml` for the list of dependencies and plugins used in the project.
+## Web Interface
+
+The application provides a simple, clean chat interface where you can:
+- Have conversations with the AI
+- Get responses powered by Ollama's llama3 model
+- Enjoy a responsive design that works on all devices
+
+## Stable Diffusion Setup (Optional)
+
+To enable actual image generation, set up Stable Diffusion WebUI:
+
+1. Install [AUTOMATIC1111 WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
+2. Start with API enabled: `./webui.sh --api`
+3. The application will automatically detect it at `http://localhost:7860`
+
+## Configuration
+
+### application.properties
+```properties
+# Ollama Configuration
+spring.ai.ollama.base-url=http://localhost:11434
+spring.ai.ollama.chat.options.model=llama3
+spring.ai.ollama.chat.options.temperature=0.7
+
+# Logging
+logging.level.com.example.springaiproject.service.AiService=INFO
+```
+
+## Architecture
+
+- **SpringAiProjectApplication.java**: Main application class
+- **AiController.java**: REST API endpoints
+- **ChatController.java**: Web UI controller
+- **AiService.java**: Core AI integration service
+- **OllamaConfig.java**: Ollama configuration
+- **WebConfig.java**: CORS and web configuration
+- **chat.html**: Modern web interface
+
+## Java 24 Compatibility
+
+This project uses Java 24 with Byte Buddy experimental mode:
+```bash
+mvn spring-boot:run -Dnet.bytebuddy.experimental=true
+```
+
+For testing:
+```bash
+mvn clean test -Dnet.bytebuddy.experimental=true
+```
+
+## Development
+
+### Build
+```bash
+mvn clean compile
+```
+
+### Test
+```bash
+mvn test -Dnet.bytebuddy.experimental=true
+```
+
+### Package
+```bash
+mvn clean package -Dnet.bytebuddy.experimental=true
+```
+
+## Troubleshooting
+
+1. **Ollama Connection Issues**
+   - Ensure Ollama is running: `ollama serve`
+   - Check if llama3 model is available: `ollama list`
+
+2. **Java 24 Issues**
+   - Always use `-Dnet.bytebuddy.experimental=true` flag
+   - Ensure you're using compatible Spring Boot version (3.2.5)
+
+3. **Image Generation Issues**
+   - For SD mode: Ensure Stable Diffusion WebUI is running with `--api` flag
+   - Check logs for connection errors
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+
+This project is licensed under the MIT License.

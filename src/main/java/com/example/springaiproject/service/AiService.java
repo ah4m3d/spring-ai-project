@@ -17,11 +17,11 @@ public class AiService {
     public AiService(OllamaChatClient ollamaChatClient, OllamaOptions ollamaOptions) {
         this.ollamaChatClient = ollamaChatClient;
         this.ollamaOptions = ollamaOptions;
-        logger.info("Configured Ollama model: {}", ollamaOptions.getModel());  // Debug log
+        logger.info("Configured Ollama model: {}", ollamaOptions.getModel());
     }
 
     public String generateResponse(String prompt) {
-        logger.info("Using model: {}", ollamaOptions.getModel());  // Log on each call
+        logger.info("Using model: {}", ollamaOptions.getModel());
         return ollamaChatClient.call(new Prompt(prompt)).getResult().getOutput().getContent();
     }
 }
